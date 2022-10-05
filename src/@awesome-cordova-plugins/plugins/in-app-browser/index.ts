@@ -4,6 +4,21 @@ import { Observable, Observer } from 'rxjs';
 
 declare const cordova: Cordova & { InAppBrowser: any };
 
+/**
+ * Basic auth 'user'/'pass'
+ */
+export interface InAppBrowserBasicAuthLogin {
+  user?: string;
+  pass?: string;
+}
+
+/**
+ * A map of basic auth 'host' to 'user'/'pass'
+ */
+export interface InAppBrowserBasicAuthLogins {
+  [host: string]: InAppBrowserBasicAuthLogin;
+}
+
 export interface InAppBrowserOptions {
   /**
    * (iOS Only) Set to yes or no to allow in-line HTML5 media playback, displaying within the browser window rather than a device-specific playback interface.
@@ -112,8 +127,8 @@ export interface InAppBrowserOptions {
   usewkwebview?: 'yes' | 'no';
   /** (Android Only) Set to yes to show Android browser's zoom controls, set to no to hide them. Default value is yes. */
   zoom?: 'yes' | 'no';
-  /** BasicAuthLogins - { host1: { user: string, pass: string }, host2: { ... }, ... } */
-  basicauth?: string;
+  /** BasicAuthLogins - { host1: { user: string, pass: string }, host2: { ... }, ... } or a urlEncoded-json-string of the same information. */
+  basicauth?: string | InAppBrowserBasicAuthLogins;
   /**
    * @hidden
    */
@@ -164,10 +179,15 @@ export class InAppBrowserObject {
     try {
       if (options && typeof options !== 'string') {
         options = Object.keys(options)
-          .map((key: string) => `${key}=${(options as InAppBrowserOptions)[key]}`)
+          .map((key: string) => {
+            let value = (options as InAppBrowserOptions)[key];
+            if (key === 'basicauth' && value && typeof value !== 'string') {
+              value = encodeURIComponent(JSON.stringify(value));
+            }
+            return `${key}=${value}`;
+          })
           .join(',');
       }
-
       this._objectInstance = cordova.InAppBrowser.open(url, target, options);
     } catch (e) {
       if (typeof window !== 'undefined') {
