@@ -112,7 +112,7 @@ export interface InAppBrowserOptions {
   usewkwebview?: 'yes' | 'no';
   /** (Android Only) Set to yes to show Android browser's zoom controls, set to no to hide them. Default value is yes. */
   zoom?: 'yes' | 'no';
-  /** A url-encoded json of basicAuthLogins, { host: string, user: string, pass: string } */
+  /** BasicAuthLogins - { host1: { user: string, pass: string }, host2: { ... }, ... } */
   basicauth?: string;
   /**
    * @hidden
