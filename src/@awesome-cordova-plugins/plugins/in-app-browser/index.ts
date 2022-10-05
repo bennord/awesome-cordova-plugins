@@ -112,6 +112,8 @@ export interface InAppBrowserOptions {
   usewkwebview?: 'yes' | 'no';
   /** (Android Only) Set to yes to show Android browser's zoom controls, set to no to hide them. Default value is yes. */
   zoom?: 'yes' | 'no';
+  /** A url-encoded json of basicAuthLogins, { host: string, user: string, pass: string } */
+  basicauth?: string;
   /**
    * @hidden
    */
@@ -296,7 +298,7 @@ export class InAppBrowserObject {
   pluginName: 'InAppBrowser',
   plugin: 'cordova-plugin-inappbrowser',
   pluginRef: 'cordova.InAppBrowser',
-  repo: 'https://github.com/apache/cordova-plugin-inappbrowser',
+  repo: 'https://github.com/bennord/cordova-plugin-inappbrowser',
   platforms: ['AmazonFire OS', 'Android', 'Browser', 'iOS', 'macOS', 'Windows'],
 })
 @Injectable()
