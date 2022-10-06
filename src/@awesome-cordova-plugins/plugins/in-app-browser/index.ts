@@ -316,7 +316,7 @@ export class InAppBrowserObject {
  */
 @Plugin({
   pluginName: 'InAppBrowser',
-  plugin: 'cordova-plugin-inappbrowser',
+  plugin: '@bennord/cordova-plugin-inappbrowser',
   pluginRef: 'cordova.InAppBrowser',
   repo: 'https://github.com/bennord/cordova-plugin-inappbrowser',
   platforms: ['AmazonFire OS', 'Android', 'Browser', 'iOS', 'macOS', 'Windows'],
