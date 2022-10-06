@@ -11,10 +11,10 @@ import { Logger } from '../logger';
 // tslint:disable-next-line:no-var-requires
 const MAIN_PACKAGE_JSON = require('../../package.json');
 const VERSION = MAIN_PACKAGE_JSON.version;
-const FLAGS = '--access public';
+const FLAGS = '--access public --dry-run';
 
 const PACKAGE_JSON_BASE = {
-  description: 'Awesome Cordova Plugins - Native plugins for ionic apps',
+  description: 'Awesome Cordova Plugins (bennord fork) - Native plugins for ionic apps',
   main: 'bundle.js',
   module: 'index.js',
   typings: 'index.d.ts',
@@ -22,13 +22,17 @@ const PACKAGE_JSON_BASE = {
   license: 'MIT',
   repository: {
     type: 'git',
-    url: 'https://github.com/danielsogl/awesome-cordova-plugins.git',
+    url: 'https://github.com/bennord/awesome-cordova-plugins.git',
   },
 };
 
 const DIST = resolve(ROOT, 'dist/@awesome-cordova-plugins');
 
-const PACKAGES = [];
+/**
+ * List of package names that we modified in our fork and want to publish
+ */
+const BENNORD_PACKAGE_NAMES = ['in-app-browser'];
+const BENNORD_PACKAGES = [];
 
 const MIN_CORE_VERSION = '^5.1.0';
 const RXJS_VERSION = '^5.5.0 || ^6.5.0 || ^7.3.0';
@@ -40,25 +44,28 @@ const PLUGIN_PEER_DEPENDENCIES = {
 
 function getPackageJsonContent(name: string, peerDependencies = {}, dependencies = {}) {
   return merge(PACKAGE_JSON_BASE, {
-    name: '@awesome-cordova-plugins/' + name,
+    name: '@bennord-awesome-cordova-plugins/' + name,
     dependencies,
     peerDependencies,
     version: VERSION,
   });
 }
 
-function writePackageJson(data: any, dir: string) {
+function writePackageJson(name: string, data: any, dir: string) {
   const filePath = resolve(dir, 'package.json');
   writeJSONSync(filePath, data);
-  PACKAGES.push(dir);
+  if (BENNORD_PACKAGE_NAMES.includes(name)) {
+    BENNORD_PACKAGES.push(dir);
+  }
 }
 function writeNGXPackageJson(data: any, dir: string) {
   const filePath = resolve(dir, 'package.json');
   writeJSONSync(filePath, data);
 }
 function prepare() {
-  // write @awesome-cordova-plugins/core package.json
+  // write @bennord-awesome-cordova-plugins/core package.json
   writePackageJson(
+    'core',
     getPackageJsonContent('core', { rxjs: RXJS_VERSION }, { '@types/cordova': 'latest' }),
     resolve(DIST, 'core')
   );
@@ -69,7 +76,7 @@ function prepare() {
     const packageJsonContents = getPackageJsonContent(pluginName, PLUGIN_PEER_DEPENDENCIES);
     const dir = resolve(DIST, 'plugins', pluginName);
     const ngxDir = join(dir, 'ngx');
-    writePackageJson(packageJsonContents, dir);
+    writePackageJson(pluginName, packageJsonContents, dir);
     writeNGXPackageJson(packageJsonContents, ngxDir);
   });
 }
@@ -99,7 +106,7 @@ async function publish(ignoreErrors = false) {
   );
 
   try {
-    await Queue(worker, PACKAGES, cpus().length);
+    await Queue(worker, BENNORD_PACKAGES, cpus().length);
     Logger.info('Done publishing!');
   } catch (e) {
     Logger.error('Error publishing!');
