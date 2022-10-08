@@ -11,7 +11,10 @@ import { Logger } from '../logger';
 // tslint:disable-next-line:no-var-requires
 const MAIN_PACKAGE_JSON = require('../../package.json');
 const VERSION = MAIN_PACKAGE_JSON.version;
-const FLAGS = '--access public --dry-run';
+const SCRIPT_ARGS_DELIM = '--';
+const arg_delim_index = process.argv.findIndex((arg) => arg === SCRIPT_ARGS_DELIM);
+const FLAGS = arg_delim_index < 0 ? '' : process.argv.slice(arg_delim_index + 1).join(' ');
+Logger.info(`npm publish FLAGS: ${FLAGS}`);
 
 const PACKAGE_JSON_BASE = {
   description: 'Awesome Cordova Plugins (bennord fork) - Native plugins for ionic apps',
