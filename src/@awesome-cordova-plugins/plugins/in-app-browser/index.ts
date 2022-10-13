@@ -22,15 +22,15 @@ export interface InAppBrowserBasicAuthLogins {
 /**
  * http header map
  */
-export interface AdditionalHeaders {
+export interface InAppBrowserHeaders {
   [header: string]: string;
 }
 
 /**
  * A map of http headers per host
  */
-export interface HostsAdditionalHeaders {
-  [host: string]: AdditionalHeaders;
+export interface InAppBrowserHostHeaders {
+  [host: string]: InAppBrowserHeaders;
 }
 
 export interface InAppBrowserOptions {
@@ -144,7 +144,7 @@ export interface InAppBrowserOptions {
   /** BasicAuthLogins - { host1: { user: string, pass: string }, host2: { ... }, ... } or a urlEncoded-json-string of the same information. */
   basicauth?: string | InAppBrowserBasicAuthLogins;
   /** AddtionalHeaders - { host1: { header1: string, header2: string, ... }, host2: { ... }, ... } or a urlEncoded-json-string of the same information. */
-  headers?: string | HostsAdditionalHeaders;
+  headers?: string | InAppBrowserHostHeaders;
   /**
    * @hidden
    */
