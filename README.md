@@ -7,7 +7,6 @@ Forked to investigate features in the following plugins:
 ## in-app-browser
 
 - cordova-plugin-inappbrowser (fork): https://github.com/bennord/cordova-plugin-inappbrowser
-- `basicauth` support
 
 #
 

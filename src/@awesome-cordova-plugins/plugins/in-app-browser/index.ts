@@ -19,6 +19,19 @@ export interface InAppBrowserBasicAuthLogins {
   [host: string]: InAppBrowserBasicAuthLogin;
 }
 
+/**
+ * http headers for a url-regex group
+ */
+export interface InAppBrowserHeaderGroup {
+  urlRegex: string;
+  headers: { [header: string]: string };
+}
+
+/**
+ * A list of http headers groups per url-regex
+ */
+export type InAppBrowserHeaders = InAppBrowserHeaderGroup[];
+
 export interface InAppBrowserOptions {
   /**
    * (iOS Only) Set to yes or no to allow in-line HTML5 media playback, displaying within the browser window rather than a device-specific playback interface.
@@ -129,6 +142,8 @@ export interface InAppBrowserOptions {
   zoom?: 'yes' | 'no';
   /** BasicAuthLogins - { host1: { user: string, pass: string }, host2: { ... }, ... } or a urlEncoded-json-string of the same information. */
   basicauth?: string | InAppBrowserBasicAuthLogins;
+  /** AddtionalHeaders - [{urlRegex, { header1: string, header2: string, ... }}, ... ] or a urlEncoded-json-string of the same information. */
+  headers?: string | InAppBrowserHeaders;
   /**
    * @hidden
    */
@@ -181,7 +196,7 @@ export class InAppBrowserObject {
         options = Object.keys(options)
           .map((key: string) => {
             let value = (options as InAppBrowserOptions)[key];
-            if (key === 'basicauth' && value && typeof value !== 'string') {
+            if (typeof value !== 'string') {
               value = encodeURIComponent(JSON.stringify(value));
             }
             return `${key}=${value}`;
