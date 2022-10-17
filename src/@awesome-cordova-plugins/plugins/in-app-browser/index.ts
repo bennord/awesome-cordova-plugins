@@ -20,18 +20,17 @@ export interface InAppBrowserBasicAuthLogins {
 }
 
 /**
- * http header map
+ * http headers for a url-regex group
  */
-export interface InAppBrowserHeaders {
-  [header: string]: string;
+export interface InAppBrowserHeaderGroup {
+  urlRegex: string;
+  headers: { [header: string]: string };
 }
 
 /**
- * A map of http headers per host
+ * A list of http headers groups per url-regex
  */
-export interface InAppBrowserHostHeaders {
-  [host: string]: InAppBrowserHeaders;
-}
+export type InAppBrowserHeaders = InAppBrowserHeaderGroup[];
 
 export interface InAppBrowserOptions {
   /**
@@ -143,8 +142,8 @@ export interface InAppBrowserOptions {
   zoom?: 'yes' | 'no';
   /** BasicAuthLogins - { host1: { user: string, pass: string }, host2: { ... }, ... } or a urlEncoded-json-string of the same information. */
   basicauth?: string | InAppBrowserBasicAuthLogins;
-  /** AddtionalHeaders - { host1: { header1: string, header2: string, ... }, host2: { ... }, ... } or a urlEncoded-json-string of the same information. */
-  headers?: string | InAppBrowserHostHeaders;
+  /** AddtionalHeaders - [{urlRegex, { header1: string, header2: string, ... }}, ... ] or a urlEncoded-json-string of the same information. */
+  headers?: string | InAppBrowserHeaders;
   /**
    * @hidden
    */
