@@ -194,6 +194,7 @@ export class InAppBrowserObject {
     try {
       if (options && typeof options !== 'string') {
         options = Object.keys(options)
+          .filter((key) => (options as InAppBrowserOptions)[key] !== undefined)
           .map((key: string) => {
             let value = (options as InAppBrowserOptions)[key];
             if (typeof value !== 'string') {
