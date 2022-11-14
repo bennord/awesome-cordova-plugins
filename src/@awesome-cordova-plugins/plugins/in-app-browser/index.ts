@@ -59,6 +59,18 @@ export interface InAppBrowserOptions {
    */
   closebuttoncaption?: string;
   /**
+   * (Android Only) Set the text size of the `closebuttoncaption`.
+   */
+  closebuttonsize?: number;
+  /**
+   * (Android Only) Set the horizontal offset of the `closebuttoncaption`.
+   */
+  closebuttonoffsetx?: number;
+  /**
+   * (Android Only) Set the vertical offset of the `closebuttoncaption`.
+   */
+  closebuttonoffsety?: number;
+  /**
    * (Android) Set to a valid hex color string, for example: #00ff00, and it will change the close button color from default, regardless of being a text or default X. Only has effect if user has location set to yes.
    * (iOS) Set as a valid hex color string, for example: #00ff00, to change from the default Done button's color. Only applicable if toolbar is not disabled.
    */
@@ -197,7 +209,7 @@ export class InAppBrowserObject {
           .filter((key) => (options as InAppBrowserOptions)[key] !== undefined)
           .map((key: string) => {
             let value = (options as InAppBrowserOptions)[key];
-            if (typeof value !== 'string') {
+            if (!['string', 'number'].includes(typeof value)) {
               value = encodeURIComponent(JSON.stringify(value));
             }
             return `${key}=${value}`;
