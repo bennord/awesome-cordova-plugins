@@ -156,6 +156,8 @@ export interface InAppBrowserOptions {
   basicauth?: string | InAppBrowserBasicAuthLogins;
   /** AddtionalHeaders - [{urlRegex, { header1: string, header2: string, ... }}, ... ] or a urlEncoded-json-string of the same information. */
   headers?: string | InAppBrowserHeaders;
+  /** Append specified text to user-agent header  */
+  appenduseragent?: string;
   /**
    * @hidden
    */
