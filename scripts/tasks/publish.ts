@@ -20,6 +20,7 @@ const PACKAGE_JSON_BASE = {
   description: 'Awesome Cordova Plugins (bennord fork) - Native plugins for ionic apps',
   main: 'bundle.js',
   module: 'index.js',
+  exports: './index.js',
   typings: 'index.d.ts',
   author: 'ionic',
   license: 'MIT',
